@@ -293,7 +293,16 @@ body{padding-bottom:90px}
 </nav>
 
 <section id="settings" class="tool-section">
- <h2>⚙️ App Settings</h2>
+ <h2>⚙️ App Settings</h2><div class="glass">
+  <h3>🎨 Choose App Theme</h3>
+
+  <select id="themeSelect" onchange="changeTheme(this.value)">
+    <option value="midnight">🌌 Midnight</option>
+    <option value="light">☀️ Light</option>
+    <option value="purple">💜 Purple</option>
+    <option value="nature">🌿 Nature Green</option>
+  </select>
+ </div>
  <div class="glass">
   <h3>Shankar Daily Hub</h3>
   <p>Version 1.0</p>
