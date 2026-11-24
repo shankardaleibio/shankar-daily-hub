@@ -7,6 +7,63 @@
 <meta name="theme-color" content="#10152c"><link rel="manifest" href="./manifest.json">
 <title>Shankar Daily Hub</title>
 <style>
+#splash{
+ position:fixed;
+ inset:0;
+ z-index:9999;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ background:linear-gradient(140deg,#10152c,#30205c,#10152c);
+ transition:opacity .6s ease;
+}
+.splash-logo{
+ font-size:65px;
+ animation:pulse 1.2s infinite alternate;
+}
+#splash h1{
+ margin:12px 0 4px;
+ font-size:30px;
+}
+#splash p{
+ letter-spacing:5px;
+ color:#9d9bff;
+}
+.loader{
+ width:100px;
+ height:4px;
+ background:linear-gradient(90deg,#8b70ff,#42d5ff);
+ border-radius:10px;
+ animation:load 1.2s infinite alternate;
+}
+@keyframes pulse{
+ to{transform:scale(1.2)}
+}
+@keyframes load{
+ from{width:25px}
+ to{width:100px}
+}
+.bottom-nav{
+ position:fixed;
+ bottom:0;
+ left:0;
+ right:0;
+ z-index:100;
+ display:flex;
+ justify-content:space-around;
+ padding:10px 5px;
+ background:rgba(13,19,42,.94);
+ border-top:1px solid #ffffff25;
+ backdrop-filter:blur(18px);
+}
+.bottom-nav button{
+ background:transparent;
+ font-size:12px;
+ padding:9px 8px;
+}
+body{padding-bottom:90px}
+ 
 *{box-sizing:border-box}
 body{
  margin:0;padding:20px 15px 40px;color:white;
@@ -68,7 +125,12 @@ footer{text-align:center;color:#aeb5ce;font-size:12px;margin-top:30px}
 </style>
 </head>
 <body>
-
+<div id="splash">
+  <div class="splash-logo">✨</div>
+  <h1>Shankar</h1>
+  <p>DAILY HUB</p>
+  <div class="loader"></div>
+</div>
 <header>
  <div class="clock" id="date"></div>
  <h1>✨ Shankar Daily Hub</h1>
@@ -163,7 +225,26 @@ footer{text-align:center;color:#aeb5ce;font-size:12px;margin-top:30px}
 </div>
 </section>
 
-<footer>
+<footer><nav class="bottom-nav">
+ <button onclick="window.scrollTo({top:0,behavior:'smooth'})">🏠 Home</button>
+ <button onclick="go('tasks')">✅ Tasks</button>
+ <button onclick="go('notes')">📝 Notes</button>
+ <button onclick="go('settings')">⚙️ Settings</button>
+</nav>
+
+<section id="settings" class="tool-section">
+ <h2>⚙️ App Settings</h2>
+ <div class="glass">
+  <h3>Shankar Daily Hub</h3>
+  <p>Version 1.0</p>
+  <p>Offline storage enabled</p>
+  <p>Made by Shankar Dalei ❤️</p>
+  <button class="secondary"
+   onclick="if(confirm('Clear all saved app data? This cannot be undone.'))clearAppData()">
+   Clear App Data
+  </button>
+ </div>
+</section>
  Made with ❤️ by Shankar Dalei<br>
  Shankar Daily Hub © 2026
 </footer>
