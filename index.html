@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10152c">
+<title>Shankar Daily Hub</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;padding:25px 16px;
+ font-family:Arial,sans-serif;color:#fff;
+ background:radial-gradient(circle at 10% 10%,#493b80,transparent 38%),
+ radial-gradient(circle at 90% 80%,#174c75,transparent 40%),#10152c;
+}
+header,.glass{
+ background:rgba(255,255,255,.09);
+ border:1px solid rgba(255,255,255,.16);
+ backdrop-filter:blur(18px);
+ -webkit-backdrop-filter:blur(18px);
+ border-radius:22px;
+ box-shadow:0 8px 32px #0003;
+}
+header{padding:22px;margin-bottom:22px}
+h1{font-size:25px;margin:0 0 7px}
+p{color:#c4c9df}
+.clock{font-size:14px;color:#a9b9ff}
+h2{font-size:18px;margin:25px 0 13px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.glass{padding:17px}
+.tool{min-height:105px}
+.tool span{font-size:27px}
+.tool h3{font-size:15px;margin:12px 0 0}
+input,textarea{
+ width:100%;padding:13px;margin:7px 0;
+ border:1px solid #ffffff35;border-radius:12px;
+ background:#ffffff12;color:white;font-size:15px;
+}
+textarea{min-height:100px;resize:vertical}
+button{
+ padding:12px 17px;border:0;border-radius:12px;
+ background:linear-gradient(120deg,#8975ff,#44b9e9);
+ color:white;font-weight:bold;cursor:pointer;
+}
+.task{display:flex;align-items:center;gap:9px;margin:12px 0}
+.task input{width:auto}
+footer{text-align:center;margin:30px 0;color:#aeb5ce;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+ <div class="clock" id="date"></div>
+ <h1>✨ Shankar Daily Hub</h1>
+ <p>Your everyday tools, all in one place.</p>
+ <div id="time"></div>
+</header>
+
+<h2>🚀 Daily Tools</h2>
+<div class="grid">
+ <div class="glass tool"><span>✅</span><h3>To-Do List</h3></div>
+ <div class="glass tool"><span>📝</span><h3>Personal Notes</h3></div>
+ <div class="glass tool"><span>💰</span><h3>Expense Tracker</h3></div>
+ <div class="glass tool"><span>🧮</span><h3>Calculator</h3></div>
+ <div class="glass tool"><span>📅</span><h3>Calendar</h3></div>
+ <div class="glass tool"><span>🎯</span><h3>Habit Tracker</h3></div>
+ <div class="glass tool"><span>🛒</span><h3>Shopping List</h3></div>
+ <div class="glass tool"><span>⚙️</span><h3>Settings</h3></div>
+</div>
+
+<h2>✅ My Daily Tasks</h2>
+<div class="glass">
+ <input id="taskInput" placeholder="Enter a new task">
+ <button onclick="addTask()">+ Add Task</button>
+ <div id="tasks"></div>
+</div>
+
+<h2>📝 Quick Notes</h2>
+<div class="glass">
+ <textarea id="notes" placeholder="Write your notes here..."></textarea>
+ <button onclick="saveNotes()">Save Notes</button>
+ <p id="status"></p>
+</div>
+
+<footer>Made with ❤️ by Shankar Dalei</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+function updateClock(){
+ const d=new Date();
+ $('date').textContent=d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+ $('time').textContent=d.toLocaleTimeString();
+}
+setInterval(updateClock,1000);updateClock();
+
+let tasks=JSON.parse(localStorage.getItem('hubTasks')||'[]');
+function renderTasks(){
+ $('tasks').innerHTML='';
+ tasks.forEach((t,i)=>{
+  const div=document.createElement('div');
+  div.className='task';
+  const cb=document.createElement('input');
+  cb.type='checkbox';cb.checked=t.done;
+  cb.onchange=()=>{tasks[i].done=cb.checked;saveTasks()};
+  const label=document.createElement('span');
+  label.textContent=t.text;
+  if(t.done)label.style.textDecoration='line-through';
+  const del=document.createElement('button');
+  del.textContent='×';
+  del.onclick=()=>{tasks.splice(i,1);saveTasks()};
+  div.append(cb,label,del);$('tasks').append(div);
+ });
+}
+function saveTasks(){
+ localStorage.setItem('hubTasks',JSON.stringify(tasks));renderTasks();
+}
+function addTask(){
+ const v=$('taskInput').value.trim();
+ if(!v)return;
+ tasks.push({text:v,done:false});
+ $('taskInput').value='';saveTasks();
+}
+$('notes').value=localStorage.getItem('hubNotes')||'';
+function saveNotes(){
+ localStorage.setItem('hubNotes',$('notes').value);
+ $('status').textContent='✓ Notes saved on this device!';
+}
+renderTasks();
+</script>
+</body>
+</html>
