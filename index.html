@@ -123,6 +123,66 @@ button.delete{background:#a83e59}
 .calc-grid button{font-size:18px;padding:16px 5px}
 footer{text-align:center;color:#aeb5ce;font-size:12px;margin-top:30px}
 </style>
+/* Splash Screen */
+#splash{
+ position:fixed;
+ inset:0;
+ z-index:9999;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ align-items:center;
+ background:linear-gradient(140deg,#10152c,#30205c,#10152c);
+ transition:opacity .6s ease;
+}
+.splash-logo{
+ font-size:65px;
+ animation:pulse 1.2s infinite alternate;
+}
+#splash h1{
+ margin:12px 0 4px;
+ font-size:30px;
+}
+#splash p{
+ letter-spacing:5px;
+ color:#9d9bff;
+}
+.loader{
+ width:100px;
+ height:4px;
+ background:linear-gradient(90deg,#8b70ff,#42d5ff);
+ border-radius:10px;
+ animation:load 1.2s infinite alternate;
+}
+@keyframes pulse{
+ to{transform:scale(1.2)}
+}
+@keyframes load{
+ from{width:25px}
+ to{width:100px}
+}
+
+/* Bottom Navigation */
+.bottom-nav{
+ position:fixed;
+ bottom:0;
+ left:0;
+ right:0;
+ z-index:100;
+ display:flex;
+ justify-content:space-around;
+ padding:10px 5px;
+ background:rgba(13,19,42,.94);
+ border-top:1px solid #ffffff25;
+ backdrop-filter:blur(18px);
+}
+.bottom-nav button{
+ background:transparent;
+ font-size:12px;
+ padding:9px 8px;
+}
+body{padding-bottom:90px}
+ 
 </head>
 <body>
 <div id="splash">
