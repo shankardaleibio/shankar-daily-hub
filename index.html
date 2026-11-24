@@ -3,14 +3,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#10152c">
 <title>Shankar Daily Hub</title>
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;min-height:100vh;padding:25px 16px;
- font-family:Arial,sans-serif;color:#fff;
+ margin:0;padding:20px 15px 40px;color:white;
+ font-family:Arial,sans-serif;min-height:100vh;
  background:radial-gradient(circle at 10% 10%,#493b80,transparent 38%),
  radial-gradient(circle at 90% 80%,#174c75,transparent 40%),#10152c;
 }
@@ -19,36 +19,56 @@ header,.glass{
  border:1px solid rgba(255,255,255,.16);
  backdrop-filter:blur(18px);
  -webkit-backdrop-filter:blur(18px);
- border-radius:22px;
+ border-radius:20px;padding:18px;
  box-shadow:0 8px 32px #0003;
 }
-header{padding:22px;margin-bottom:22px}
-h1{font-size:25px;margin:0 0 7px}
-p{color:#c4c9df}
-.clock{font-size:14px;color:#a9b9ff}
-h2{font-size:18px;margin:25px 0 13px}
+header{margin-bottom:20px}
+h1{font-size:25px;margin:8px 0}
+h2{font-size:19px;margin:24px 0 12px}
+p{color:#bdc5dd}
+.clock{color:#a9b9ff;font-size:13px}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.glass{padding:17px}
-.tool{min-height:105px}
-.tool span{font-size:27px}
-.tool h3{font-size:15px;margin:12px 0 0}
-input,textarea{
- width:100%;padding:13px;margin:7px 0;
- border:1px solid #ffffff35;border-radius:12px;
- background:#ffffff12;color:white;font-size:15px;
+.tool{
+ cursor:pointer;min-height:100px;
+ transition:.2s;
 }
-textarea{min-height:100px;resize:vertical}
+.tool:active{transform:scale(.96)}
+.tool span{font-size:27px}
+.tool h3{font-size:14px;margin:12px 0 0}
+input,textarea,select{
+ width:100%;padding:13px;margin:6px 0;
+ border:1px solid #ffffff35;border-radius:12px;
+ background:#17233e;color:white;font-size:15px;
+}
+textarea{min-height:90px}
 button{
- padding:12px 17px;border:0;border-radius:12px;
+ padding:12px 16px;border:0;border-radius:12px;
  background:linear-gradient(120deg,#8975ff,#44b9e9);
  color:white;font-weight:bold;cursor:pointer;
+ margin:4px 2px;
 }
-.task{display:flex;align-items:center;gap:9px;margin:12px 0}
-.task input{width:auto}
-footer{text-align:center;margin:30px 0;color:#aeb5ce;font-size:12px}
+button.secondary{background:#ffffff20}
+button.delete{background:#a83e59}
+.item{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:8px;padding:10px 0;border-bottom:1px solid #ffffff20;
+}
+.item label{display:flex;align-items:center;gap:8px;flex:1}
+.item input[type=checkbox]{width:auto}
+.small{font-size:12px;color:#b9c4e0}
+.amount{font-size:25px;font-weight:bold;color:#80d8ff}
+.tool-section{scroll-margin-top:15px}
+.hidden{display:none}
+.calc-display{
+ font-size:27px;text-align:right;background:#101a32;
+}
+.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.calc-grid button{font-size:18px;padding:16px 5px}
+footer{text-align:center;color:#aeb5ce;font-size:12px;margin-top:30px}
 </style>
 </head>
 <body>
+
 <header>
  <div class="clock" id="date"></div>
  <h1>✨ Shankar Daily Hub</h1>
@@ -58,83 +78,296 @@ footer{text-align:center;margin:30px 0;color:#aeb5ce;font-size:12px}
 
 <h2>🚀 Daily Tools</h2>
 <div class="grid">
- <div class="glass tool"><span>✅</span><h3>To-Do List</h3></div>
- <div class="glass tool"><span>📝</span><h3>Personal Notes</h3></div>
- <div class="glass tool"><span>💰</span><h3>Expense Tracker</h3></div>
- <div class="glass tool"><span>🧮</span><h3>Calculator</h3></div>
- <div class="glass tool"><span>📅</span><h3>Calendar</h3></div>
- <div class="glass tool"><span>🎯</span><h3>Habit Tracker</h3></div>
- <div class="glass tool"><span>🛒</span><h3>Shopping List</h3></div>
- <div class="glass tool"><span>⚙️</span><h3>Settings</h3></div>
+ <div class="glass tool" onclick="go('tasks')"><span>✅</span><h3>To-Do List</h3></div>
+ <div class="glass tool" onclick="go('notes')"><span>📝</span><h3>Personal Notes</h3></div>
+ <div class="glass tool" onclick="go('expenses')"><span>💰</span><h3>Expense Tracker</h3></div>
+ <div class="glass tool" onclick="go('calculator')"><span>🧮</span><h3>Calculator</h3></div>
+ <div class="glass tool" onclick="go('shopping')"><span>🛒</span><h3>Shopping List</h3></div>
+ <div class="glass tool" onclick="go('habits')"><span>🎯</span><h3>Habit Tracker</h3></div>
 </div>
 
+<section id="tasks" class="tool-section">
 <h2>✅ My Daily Tasks</h2>
 <div class="glass">
  <input id="taskInput" placeholder="Enter a new task">
  <button onclick="addTask()">+ Add Task</button>
- <div id="tasks"></div>
+ <div id="tasksList"></div>
 </div>
+</section>
 
-<h2>📝 Quick Notes</h2>
+<section id="notes" class="tool-section">
+<h2>📝 Personal Notes</h2>
 <div class="glass">
- <textarea id="notes" placeholder="Write your notes here..."></textarea>
+ <textarea id="noteText" placeholder="Write your notes here..."></textarea>
  <button onclick="saveNotes()">Save Notes</button>
- <p id="status"></p>
+ <span class="small" id="noteStatus"></span>
 </div>
+</section>
 
-<footer>Made with ❤️ by Shankar Dalei</footer>
+<section id="expenses" class="tool-section">
+<h2>💰 Expense Tracker</h2>
+<div class="glass">
+ <p class="small">Total recorded expenses</p>
+ <div class="amount" id="totalExpense">₹0.00</div>
+ <input id="expenseName" placeholder="Expense name">
+ <input id="expenseAmount" type="number" min="0" step="0.01" placeholder="Amount in ₹">
+ <button onclick="addExpense()">+ Add Expense</button>
+ <div id="expenseList"></div>
+</div>
+</section>
+
+<section id="calculator" class="tool-section">
+<h2>🧮 Calculator</h2>
+<div class="glass">
+ <input id="calcDisplay" class="calc-display" readonly value="0">
+ <div class="calc-grid">
+  <button class="secondary" onclick="clearCalc()">AC</button>
+  <button class="secondary" onclick="calcInput('/')">÷</button>
+  <button class="secondary" onclick="calcInput('*')">×</button>
+  <button class="secondary" onclick="calcInput('-')">−</button>
+  <button onclick="calcInput('7')">7</button>
+  <button onclick="calcInput('8')">8</button>
+  <button onclick="calcInput('9')">9</button>
+  <button class="secondary" onclick="calcInput('+')">+</button>
+  <button onclick="calcInput('4')">4</button>
+  <button onclick="calcInput('5')">5</button>
+  <button onclick="calcInput('6')">6</button>
+  <button onclick="calcInput('.')">.</button>
+  <button onclick="calcInput('1')">1</button>
+  <button onclick="calcInput('2')">2</button>
+  <button onclick="calcInput('3')">3</button>
+  <button onclick="calculate()">=</button>
+  <button onclick="calcInput('0')" style="grid-column:span 2">0</button>
+  <button class="secondary" onclick="backCalc()">⌫</button>
+ </div>
+</div>
+</section>
+
+<section id="shopping" class="tool-section">
+<h2>🛒 Shopping List</h2>
+<div class="glass">
+ <input id="shopInput" placeholder="Enter shopping item">
+ <button onclick="addShop()">+ Add Item</button>
+ <div id="shopList"></div>
+</div>
+</section>
+
+<section id="habits" class="tool-section">
+<h2>🎯 Habit Tracker</h2>
+<div class="glass">
+ <p>Track your daily progress.</p>
+ <input id="habitInput" placeholder="Example: Running, Reading">
+ <button onclick="addHabit()">+ Add Habit</button>
+ <p class="small" id="habitDate"></p>
+ <div id="habitList"></div>
+</div>
+</section>
+
+<footer>
+ Made with ❤️ by Shankar Dalei<br>
+ Shankar Daily Hub © 2026
+</footer>
 
 <script>
 const $=id=>document.getElementById(id);
+function load(key,def=[]){
+ try{return JSON.parse(localStorage.getItem(key))||def}
+ catch(e){return def}
+}
+function store(key,data){
+ localStorage.setItem(key,JSON.stringify(data));
+}
+
+function go(id){
+ $(id).scrollIntoView({behavior:'smooth'});
+}
+
 function updateClock(){
  const d=new Date();
- $('date').textContent=d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+ $('date').textContent=d.toLocaleDateString('en-IN',{
+ weekday:'long',day:'numeric',month:'long',year:'numeric'
+ });
  $('time').textContent=d.toLocaleTimeString();
+ $('habitDate').textContent='Today: '+d.toLocaleDateString('en-IN');
 }
-setInterval(updateClock,1000);updateClock();
+setInterval(updateClock,1000);
+updateClock();
 
-let tasks=JSON.parse(localStorage.getItem('hubTasks')||'[]');
+// TASKS
+let tasks=load('hubTasks');
 function renderTasks(){
- $('tasks').innerHTML='';
+ $('tasksList').innerHTML='';
  tasks.forEach((t,i)=>{
   const div=document.createElement('div');
-  div.className='task';
+  div.className='item';
+  const label=document.createElement('label');
   const cb=document.createElement('input');
   cb.type='checkbox';cb.checked=t.done;
   cb.onchange=()=>{tasks[i].done=cb.checked;saveTasks()};
-  const label=document.createElement('span');
-  label.textContent=t.text;
-  if(t.done)label.style.textDecoration='line-through';
+  const text=document.createElement('span');
+  text.textContent=t.text;
+  if(t.done)text.style.textDecoration='line-through';
+  label.append(cb,text);
   const del=document.createElement('button');
-  del.textContent='×';
+  del.className='delete';del.textContent='×';
   del.onclick=()=>{tasks.splice(i,1);saveTasks()};
-  div.append(cb,label,del);$('tasks').append(div);
+  div.append(label,del);
+  $('tasksList').append(div);
  });
 }
-function saveTasks(){
- localStorage.setItem('hubTasks',JSON.stringify(tasks));renderTasks();
-}
+function saveTasks(){store('hubTasks',tasks);renderTasks()}
 function addTask(){
  const v=$('taskInput').value.trim();
  if(!v)return;
  tasks.push({text:v,done:false});
  $('taskInput').value='';saveTasks();
 }
-$('notes').value=localStorage.getItem('hubNotes')||'';
-function saveNotes(){
- localStorage.setItem('hubNotes',$('notes').value);
- $('status').textContent='✓ Notes saved on this device!';
-}
-renderTasks();renderTasks();
 
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js")
-      .then(() => console.log("Offline support enabled"))
-      .catch(err => console.log(err));
-  });
+// NOTES
+$('noteText').value=localStorage.getItem('hubNotes')||'';
+function saveNotes(){
+ localStorage.setItem('hubNotes',$('noteText').value);
+ $('noteStatus').textContent='✓ Saved on this device!';
 }
-</script>
+
+// EXPENSES
+let expenses=load('hubExpenses');
+function renderExpenses(){
+ $('expenseList').innerHTML='';
+ let total=expenses.reduce((s,e)=>s+e.amount,0);
+ $('totalExpense').textContent='₹'+total.toFixed(2);
+ expenses.forEach((e,i)=>{
+  const div=document.createElement('div');
+  div.className='item';
+  const name=document.createElement('span');
+  name.textContent=e.name+' — ₹'+e.amount.toFixed(2);
+  const del=document.createElement('button');
+  del.className='delete';del.textContent='×';
+  del.onclick=()=>{expenses.splice(i,1);saveExpenses()};
+  div.append(name,del);
+  $('expenseList').append(div);
+ });
+}
+function saveExpenses(){store('hubExpenses',expenses);renderExpenses()}
+function addExpense(){
+ const name=$('expenseName').value.trim();
+ const amount=Number($('expenseAmount').value);
+ if(!name||!Number.isFinite(amount)||amount<=0){
+  alert('Enter a name and valid amount');return;
+ }
+ expenses.push({name,amount});
+ $('expenseName').value='';
+ $('expenseAmount').value='';
+ saveExpenses();
+}
+
+// CALCULATOR
+let expression='';
+function calcInput(v){
+ if(expression.length>30)return;
+ expression+=v;
+ $('calcDisplay').value=expression;
+}
+function clearCalc(){
+ expression='';
+ $('calcDisplay').value='0';
+}
+function backCalc(){
+ expression=expression.slice(0,-1);
+ $('calcDisplay').value=expression||'0';
+}
+function calculate(){
+ if(!expression)return;
+ if(!/^[0-9+\-*/.() ]+$/.test(expression)){
+  $('calcDisplay').value='Invalid';
+  expression='';return;
+ }
+ try{
+  const result=Function('"use strict";return ('+expression+')')();
+  if(!Number.isFinite(result))throw Error();
+  expression=String(Number(result.toFixed(8)));
+  $('calcDisplay').value=expression;
+ }catch(e){
+  expression='';
+  $('calcDisplay').value='Error';
+ }
+}
+
+// SHOPPING
+let shopping=load('hubShopping');
+function renderShopping(){
+ $('shopList').innerHTML='';
+ shopping.forEach((s,i)=>{
+  const div=document.createElement('div');
+  div.className='item';
+  const label=document.createElement('label');
+  const cb=document.createElement('input');
+  cb.type='checkbox';cb.checked=s.done;
+  cb.onchange=()=>{shopping[i].done=cb.checked;saveShopping()};
+  const txt=document.createElement('span');
+  txt.textContent=s.name;
+  if(s.done)txt.style.textDecoration='line-through';
+  label.append(cb,txt);
+  const del=document.createElement('button');
+  del.className='delete';del.textContent='×';
+  del.onclick=()=>{shopping.splice(i,1);saveShopping()};
+  div.append(label,del);
+  $('shopList').append(div);
+ });
+}
+function saveShopping(){store('hubShopping',shopping);renderShopping()}
+function addShop(){
+ const v=$('shopInput').value.trim();
+ if(!v)return;
+ shopping.push({name:v,done:false});
+ $('shopInput').value='';saveShopping();
+}
+
+// HABITS
+let habits=load('hubHabits');
+let habitDay=new Date().toLocaleDateString('en-CA');
+function renderHabits(){
+ $('habitList').innerHTML='';
+ habits.forEach((h,i)=>{
+  const div=document.createElement('div');
+  div.className='item';
+  const label=document.createElement('label');
+  const cb=document.createElement('input');
+  cb.type='checkbox';cb.checked=h.lastDone===habitDay;
+  cb.onchange=()=>{
+   habits[i].lastDone=cb.checked?habitDay:'';
+   saveHabits();
+  };
+  const txt=document.createElement('span');
+  txt.textContent=h.name;
+  label.append(cb,txt);
+  const del=document.createElement('button');
+  del.className='delete';del.textContent='×';
+  del.onclick=()=>{habits.splice(i,1);saveHabits()};
+  div.append(label,del);
+  $('habitList').append(div);
+ });
+}
+function saveHabits(){store('hubHabits',habits);renderHabits()}
+function addHabit(){
+ const v=$('habitInput').value.trim();
+ if(!v)return;
+ habits.push({name:v,lastDone:''});
+ $('habitInput').value='';saveHabits();
+}
+
+// OFFLINE SUPPORT
+if('serviceWorker' in navigator){
+ window.addEventListener('load',()=>{
+  navigator.serviceWorker.register('./sw.js')
+   .catch(err=>console.log('Offline support:',err));
+ });
+}
+
+renderTasks();
+renderExpenses();
+renderShopping();
+renderHabits();
 </script>
 </body>
 </html>
