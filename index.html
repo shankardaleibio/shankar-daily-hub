@@ -450,5 +450,28 @@ renderExpenses();
 renderShopping();
 renderHabits();
 </script>
+function clearAppData(){
+  [
+    'hubTasks',
+    'hubNotes',
+    'hubExpenses',
+    'hubShopping',
+    'hubHabits'
+  ].forEach(key => localStorage.removeItem(key));
+
+  location.reload();
+}
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+
+    if (splash) {
+      splash.style.opacity = '0';
+      setTimeout(() => splash.remove(), 600);
+    }
+  }, 1200);
+});
+ 
 </body>
 </html>
