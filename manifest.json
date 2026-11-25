@@ -1,5 +1,5 @@
-
 {
+  "id": "./",
   "name": "Shankar Daily Hub",
   "short_name": "Daily Hub",
   "description": "Your personal everyday productivity dashboard",
@@ -24,3 +24,4 @@
     }
   ]
 }
+
