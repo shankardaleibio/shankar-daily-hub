@@ -1,4 +1,3 @@
-
 const CACHE_NAME = "shankar-daily-hub-v3";
 
 const FILES_TO_CACHE = [
@@ -49,3 +48,4 @@ self.addEventListener("fetch", event => {
     })
   );
 });
+
